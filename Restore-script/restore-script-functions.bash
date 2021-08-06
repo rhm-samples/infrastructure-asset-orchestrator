@@ -28,7 +28,7 @@ function displayStepHeader() {
 }
 
 function stepLog() {
-  echo -e "STEP $1/6: $2"
+  echo -e "STEP $1/7: $2"
 }
 
 function validatePropertiesfile(){
