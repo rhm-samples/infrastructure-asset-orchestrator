@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## This Script installs Modelbuilder operator using default values. 
+## This Script installs Model Builder operator using default values. 
 source restore-script-functions.bash
 source restore.properties
 

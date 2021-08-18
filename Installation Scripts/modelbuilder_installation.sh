@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## This Script installs Modelbuilder operator using default values. 
+## This Script installs Model Builder operator using default values. 
 source modelbuilder-script-functions.bash
 source cr.properties
 
@@ -21,7 +21,7 @@ checkOpenshiftVersion
 
 status=$(oc whoami 2>&1)
 if [[ $? -gt 0 ]]; then
-    echoRed "Login to OpenShift to continue IBM Modelbuilder for Vision Operator installation."
+    echoRed "Login to OpenShift to continue IBM Model Builder for Vision Operator installation."
         exit 1;
 fi
 
@@ -75,13 +75,13 @@ displayStepHeader 6 "Verify the Operator installation"
 check_for_csv_success=$(checkClusterServiceVersionSucceeded 2>&1)
 
 if [[ "${check_for_csv_success}" == "Succeeded" ]]; then
-        echoGreen "IBM Modelbuilder for Vision Operator installed"
+        echoGreen "IBM Model Builder for Vision Operator installed"
 else
-    echoRed "Something wrong with Modelbuilder Deployment setup. Please try again after some time."
+    echoRed "Something wrong with Model Builder Deployment setup. Please try again after some time."
         exit 1;
 fi
 
-displayStepHeader 7 "Create a secret named model-builder-configuration-secret for IBM Modelbuilder for Vision Operator"
+displayStepHeader 7 "Create a secret named model-builder-configuration-secret for IBM Model Builder for Vision Operator"
 
 oc create secret generic model-builder-configuration-secret --from-literal=IBM_CLOUD_APIKEY=${cloudAPIKey} -n "${projectName}" &>>"${logFile}"
 
@@ -123,7 +123,7 @@ echoGreen "status: $check_for_deployment_status"
 if [[ "${check_for_deployment_status}" == "Ready" ]]; then
         echoGreen "Modelbuilder Deployment setup ready"
 else
-    echoYellow "Something wrong with Modelbuilder Deployment setup. Please try again after some time."
+    echoYellow "Something wrong with Model Builder Deployment setup. Please try again after some time."
         exit 1;
 fi
 
@@ -135,10 +135,10 @@ export password_cmd=`oc get secret credential-modelbuilder-mbadmin-${projectName
 
 displayStepHeader 10 "Get the URLs and Login Details"
 echo "=========== User Management Console URL =============="
-echoYellow "User management Console: $url" | xargs
+echoYellow "User Management Console: $url" | xargs
 echo "=========== User Management Console Username =============="
 echoYellow "Username: $username" | xargs
-echo "=========== User Management Console Password Command =============="
+echo "=========== User Management Console Password =============="
 echoYellow "Password: $password_cmd" | xargs
 echo "=========== Workbench URL =============="
 echoYellow "Workbench URL: $workbench_url" | xargs

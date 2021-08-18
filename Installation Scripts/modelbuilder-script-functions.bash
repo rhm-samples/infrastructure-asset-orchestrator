@@ -73,7 +73,7 @@ function checkPropertyValuesprompt(){
   echoBlue "Are you sure, you want to Continue with Installation? [Y/n]: "
   read -r continueInstall </dev/tty
   if [[ ! $continueInstall || $continueInstall = *[^Yy] ]]; then
-    echoRed "Aborting installation of IBM Modelbuilder for Vision Operator"
+    echoRed "Aborting installation of IBM Model Builder for Vision Operator"
     exit 0
   fi
 }
@@ -122,10 +122,10 @@ function createProject(){
   existingns=$(oc get projects | grep -w "${projectName}" | awk '{print $1}')
 
   if [ "${existingns}" == "${projectName}" ]; then
-    echoYellow "Project ${existingns} already exists, do you want to continue IBM Modelbuilder for Vision operator installation in the existing project? [Y/n]: "
+    echoYellow "Project ${existingns} already exists, do you want to continue IBM Model Builder for Vision operator installation in the existing project? [Y/n]: "
     read -r continueInstall </dev/tty
     if [[ ! $continueInstall || $continueInstall = *[^Yy] ]]; then
-      echoRed "Aborting installation of IBM Modelbuilder for Vision Operator, please set new value for the Project in the cr.properties file." 
+      echoRed "Aborting installation of IBM Model Builder for Vision Operator, please set new value for the Project in the cr.properties file." 
       exit 0;
     fi
   else
