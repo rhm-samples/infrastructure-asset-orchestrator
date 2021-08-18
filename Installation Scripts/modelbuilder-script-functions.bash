@@ -106,10 +106,10 @@ function checkOpenshiftVersion() {
   currentOpenshiftVersion="$(oc version -o json | jq .openshiftVersion)"
   #echo $currentOpenshiftVersion
   if [[ $currentOpenshiftVersion =~ $ocpVersion ]]; then
-    echo "install Modelbuilder 1.0.0"
+    echo "install Model Builder 1.0.0"
     modebuilderVersion=v1.0.0
   elif [[ $currentOpenshiftVersion =~ $ocpVersion45 ]]; then
-    echo "install Modelbuilder 1.0.0"
+    echo "install Model Builder 1.0.0"
     modebuilderVersion=v1.0.0
   else
     echo "Unsupportedd Openshift version $currentOpenshiftVersion.Supported OpenShift versions are 4.5 to 4.7."
