@@ -109,6 +109,8 @@ spec:
     storage_size: "${storageSizeInMemory}"
   env_type: "${envType}"
   vm_request_method: "${vmRequestMethod}"
+  license:
+    accept: "${licenseValue}"
 EOF
 
 displayStepHeader 9 "Install the Deployment. Please be patient as the deployment will take time"
