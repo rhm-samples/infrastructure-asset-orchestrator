@@ -1,0 +1,49 @@
+#!/bin/bash
+
+## This Script installs Model Builder operator using default values. 
+source restore-script-functions.bash
+source restore.properties
+
+requiredVersion="^.*4\.([0-9]{3,}|[3-9]?)?(\.[0-9]+.*)*$"
+requiredServerVersion="^.*1\.([0-9]{16,}|[3-9]?)?(\.[0-9]+)*$"
+ocpVersion="^\"4\.([0-9]{6,}|[6-9]?)?(\.[0-9]+.*)*$"
+ocpVersion45="^\"4\.5\.[0-9]+.*$"
+
+logFile="restore.log"
+touch "${logFile}"
+
+validatePropertiesfile
+
+checkPropertyValuesprompt
+checkOCClientVersion
+checkOpenshiftVersion
+
+status=$(oc whoami 2>&1)
+if [[ $? -gt 0 ]]; then
+    echoRed "Login to OpenShift to restore data from S3 bucket."
+        exit 1;
+fi
+
+displayStepHeaderRestore 1 "Create a new project"
+createProject
+
+displayStepHeaderRestore 2 "Create a secret named realm-mbadmin-credentials"
+
+oc create secret generic realm-mbadmin-credentials --from-literal=REALM_PASSWORD=${REALM_PASSWORD} -n "${projectName}" &>>"${logFile}"
+
+displayStepHeaderRestore 3 "Create a secret named realm-ibmuser-credentials"
+
+oc create secret generic realm-ibmuser-credentials --from-literal=realmUser_email=${realmUser_email} --from-literal=realmUser_name=${realmUser_name} --from-literal=realmUser_password=${realmUser_password} -n "${projectName}" &>>"${logFile}"
+
+displayStepHeaderRestore 4 "Create a secret named client-secret-api-client"
+
+oc create secret generic client-secret-api-client --from-literal=CLIENT_ID=${API_CLIENT_ID} --from-literal=CLIENT_SECRET=${API_CLIENT_SECRET} -n "${projectName}" &>>"${logFile}"
+
+displayStepHeaderRestore 5 "Create a secret named client-secret-springboot-keycloak"
+
+oc create secret generic client-secret-springboot-keycloak --from-literal=CLIENT_ID=${SPRINGBOOT_CLIENT_ID} --from-literal=CLIENT_SECRET=${SPRINGBOOT_CLIENT_SECRET} -n "${projectName}" &>>"${logFile}"
+
+displayStepHeaderRestore 6 "Create a secret named model-builder-configuration-secret for IBM Model Builder for Vision Operator"
+
+oc create secret generic model-builder-configuration-secret --from-literal=IBM_CLOUD_APIKEY=${cloudAPIKey} -n "${projectName}" &>>"${logFile}"
+
