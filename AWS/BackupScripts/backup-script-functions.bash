@@ -54,6 +54,18 @@ function validatePropertiesfile(){
   fi
 }
 
+function checkDeploymentStatus() {
+
+	retryCount=90
+	retries=0
+	check_for_deployment_status=$(oc get csv -n "$projectName" --ignore-not-found | awk '$1 ~ /postgresoperator.v5.0.4/ { print }' | awk -F' ' '{print $NF}')
+	until [[ $retries -eq $retryCount || $check_for_deployment_status -ge "1" ]]; do
+		sleep 15
+		check_for_deployment_status=$(oc get PostgresCluster modelbuilder --output="jsonpath={.status.instances[0].readyReplicas}")
+		retries=$((retries + 1))
+	done
+	echo "$check_for_deployment_status"
+}
 
 function checkPropertyValuesprompt(){
   echoBlue "Please check below Properties values and confirm to Continue with restoration"

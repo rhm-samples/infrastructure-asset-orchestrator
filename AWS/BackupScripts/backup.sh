@@ -30,5 +30,13 @@ createS3Secret
 displayStepHeader 2 "Patch Postgres CR"
 patchClusterCR
 
+check_for_deployment_status=$(checkDeploymentStatus 2>&1)
+if [[ $check_for_deployment_status -ge "1" ]]; then
+	echoGreen "DB Instance up and running"
+else
+    echoRed "DB Instance no running"
+	exit 1;
+fi
+
 displayStepHeader 3 "Annotate CR"
 annotateCR
